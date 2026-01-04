@@ -23,7 +23,7 @@ export default defineNuxtConfig({
   },
 
   image: {
-    provider: 'static'
+    provider: 'none'
   },
 
   compatibilityDate: '2025-01-15',
