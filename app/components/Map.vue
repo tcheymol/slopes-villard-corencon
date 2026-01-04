@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="relative w-full">
-        <NuxtImg src="/pistes.png" />
+        <NuxtImg src="/slopes-villard-corencon/pistes.png" />
         <svg viewBox="0 0 937.41876 437.35626" class="absolute top-0 left-0 w-full h-full" @mousemove="(e: MouseEvent) => moveTooltip(tooltip, e)">
             <g v-for="loop in loops" :key="loop.id"
                 transform="translate(365.78647,70.24688)"
