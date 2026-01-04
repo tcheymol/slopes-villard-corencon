@@ -19,6 +19,7 @@ function parsePath(path, index) {
     length: length,
     path: d,
     selected: false,
+    laps: 0,
     center: { x: 0, y: 0 },
   }
 }
