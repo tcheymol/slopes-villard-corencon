@@ -10,6 +10,11 @@ export default defineNuxtConfig({
     enabled: true
   },
 
+  app: {
+    baseURL: 'https://tcheymol.github.io/slopes-villard-corencon/',
+    buildAssetsDir: '_nuxt/'
+  },
+
   ssr: false,
 
   css: ['~/assets/css/main.css'],
