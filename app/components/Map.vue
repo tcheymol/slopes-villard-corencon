@@ -1,71 +1,97 @@
 <script setup lang="ts">
-    const loops = ref([
-  {
-    id: 1,
-    path: 'm -257.69921,-24.391283 5.4011,1.995614 4.95479,0.396383 3.56745,1.783726 2.18011,0.396384 2.18011,2.378301 1.78373,1.981917 3.76564,4.558411 1.98192,5.1529859 1.98191,4.162027 1.38735,1.78372586 -2.18011,4.95479404 1.18915,3.3692599 -0.39639,2.1801093 0.59458,2.180109 2.57649,2.576494 0.39639,3.765643 -2.18011,2.378301 -3.36926,0.990959 -0.99096,2.774685 0.19819,2.3783 1.18915,2.774685 -3.96383,2.180109 -0.1982,2.378302 2.5765,3.963834 3.36926,5.747562 0.39638,2.180109 -6.34214,0.792768 h -4.7566 l -1.18915,3.36926 -1.58553,0.99096 -7.72948,3.963834 -5.15299,7.134905 -4.7566,2.576491 -4.75661,5.549371 -12.68426,8.125862 -2.97288,5.549368 -6.93672,5.945753 -2.18011,2.774686 -1.18915,1.585534 -0.59457,2.576491 -1.18914,2.18011 -1.38734,2.3783 -3.76566,4.7566 -2.18011,5.94576 -0.19818,-0.19819 -3.76565,2.97287 -15.65714,6.93671 3.36925,5.54937 -3.17108,3.56745 7.33311,10.30598 4.7566,1.38734 4.36023,6.93671',
-    length: 2.4,
-    selected: false
-  },
-])
-    function toggleLoop(loop: { selected: boolean }) {
-        loop.selected = !loop.selected
+    import { loopsData } from '~/assets/loops';
+    import { getColor, getStyles, toggleLoop } from '~/services/loops';
+    import { getTotalLength } from '~/services/loopsComputer';
+    import { hide, initialTooltip, moveTooltip, show } from '~/services/tooltip';
+
+    const tooltip = ref(initialTooltip);
+    const loops = ref(loopsData)
+
+    function getPathCenter(pathEl: SVGPathElement) {
+        const length = pathEl.getTotalLength()
+        return pathEl.getPointAtLength(length / 2)
     }
+    onMounted(() => {
+        loops.value.forEach(loop => {
+            const el = document.getElementById(`path-${loop.id}`)
+            if (!(el instanceof SVGPathElement)) return;
+            const p = getPathCenter(el)
+
+            loop.center = { x: p.x, y: p.y }
+        })
+    })
 </script>
 
 <template>
-    <div class="map-container">
+    <h1 class="w-full text-3xl m-3">Calculateur d'intinéraire Villard-Corençon</h1>
+    <div class="w-full flex flex-col items-center m-2">
+        <div class="p-3 bg-base-200 rounded-lg border border-black dark:bg-white light:bg-neutral-900">
+            <span class="text-center w-full text-2xl light:text-white dark:text-black my-3">Total : {{ getTotalLength(loops) }}km</span>
+        </div>
+    </div>
+    <div class="relative w-full">
         <NuxtImg src="/pistes.png" />
-
-        <svg viewBox="0 0 937.41876 437.35626" class="map-overlay">
-        <g
-            id="layer1"
-            sodipodi:insensitive="true"
-            transform="translate(365.78647,70.24688)"
-        ></g>
-        <g
-            id="layer2"
-            transform="translate(365.78647,70.24688)"
-        >
+        <svg viewBox="0 0 937.41876 437.35626" class="absolute top-0 left-0 w-full h-full" @mousemove="(e: MouseEvent) => moveTooltip(tooltip, e)">
+            <g v-for="loop in loops" :key="loop.id"
+                transform="translate(365.78647,70.24688)"
+               >
             <path
-                v-for="loop in loops"
+                :id="`path-${loop.id}`" 
                 :key="loop.id"
                 :d="loop.path"
-                :class="{ active: loop.selected }"
+                :class="{ active: loop.selected, [loop.grade]: true }"
                 @click="toggleLoop(loop)"
+                @mouseenter="show(tooltip, loop)"
+                @mouseleave="hide(tooltip)"
+                :style="getStyles(loop)"
             />
+            <circle
+                :cx="loop.center.x"
+                :cy="loop.center.y"
+                r="6"
+                :fill="getColor(loop)"
+            />
+
+            <text
+              :x="loop.center.x"
+              :y="loop.center.y"
+              font-size="6"
+              fill="white"
+              font-weight="bold"
+              text-anchor="middle"
+              dominant-baseline="middle"
+          > {{ loop.length }}
+          </text>
         </g>
+
         </svg>
+        <Tooltip :tooltip="tooltip"/>
     </div>
 </template>
 
 
 <style scoped>
-    .map-container {
-        position: relative;
-        width: 100%;
-    }
-
-    .map-image {
-        width: 100%;
-        display: block;
-    }
-
-    .map-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
-
     path {
         fill: none;
-        stroke: rgba(0, 0, 255, 0.6);
-        stroke-width: 6;
+        stroke-width: 4;
         cursor: pointer;
+        stroke:  var(--path-color);
+    }
+
+    path:after {
+        content: attr(data-length);
+        position: absolute;
+        background: white;
+        padding: 2px 4px;
+        border: 1px solid black;
+        font-size: 12px;
+    }
+    
+    path:hover {
+        stroke-width: 12;
     }
 
     path.active {
-        stroke: red;
+        stroke: #FFD700;
     }
 </style>

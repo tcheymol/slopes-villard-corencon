@@ -11,8 +11,8 @@ useHead({
   }
 })
 
-const title = 'Nuxt Starter Template'
-const description = 'A production-ready starter template powered by Nuxt UI. Build beautiful, accessible, and performant applications in minutes, not hours.'
+const title = "Calculateur d'intinéraire Villard-Corençon"
+const description = "Un calculateur d'intinéraire pour les pistes de ski de fond de Villard-Corençon."
 
 useSeoMeta({
   title,

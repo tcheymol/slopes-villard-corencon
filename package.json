@@ -8,7 +8,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "parse:svg": "node ./app/scripts/parse-svg.js"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.82",
@@ -17,7 +18,8 @@
     "@nuxt/ui": "^4.3.0",
     "@pinia/nuxt": "^0.11.3",
     "nuxt": "^4.2.2",
-    "pinia": "^3.0.4"
+    "pinia": "^3.0.4",
+    "xmldom": "^0.6.0"
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.12.1",
