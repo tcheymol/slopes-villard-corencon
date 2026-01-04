@@ -12,6 +12,7 @@ export default defineNuxtConfig({
 
   ssr: false,
   app: {
+    baseURL: '/slopes-villard-corencon/',
     buildAssetsDir: '_nuxt/'
   },
 
