@@ -22,7 +22,9 @@ export default defineNuxtConfig({
     '/': { prerender: true }
   },
 
-  image: {},
+  image: {
+    provider: 'static'
+  },
 
   compatibilityDate: '2025-01-15',
 
