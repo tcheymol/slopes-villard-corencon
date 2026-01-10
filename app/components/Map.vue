@@ -40,30 +40,32 @@ onMounted(() => {
                     {{ loop.length }}
                 </text>
                 <g v-if="loop.selected">
-                    <circle :cx="loop.center.x - 15" :cy="loop.center.y" r="6" :class="{ active: loop.selected }"
-                        @click="addLap(loop)" fill="#FFD700"/>
-                    <text :x="loop.center.x - 15" :y="loop.center.y + 1" font-size="12" fill="black"
-                        font-weight="bold" text-anchor="middle" dominant-baseline="middle"  @click="addLap(loop)"
-                        >
-                        +
-                    </text>
-                </g>
-                <g v-if="loop.selected">
-                    <circle :cx="loop.center.x - 15" :cy="loop.center.y - 15" r="6" :class="{ active: loop.selected }"
-                        @click="removeLap(loop)" fill="#FFD700"/>
-                    <text :x="loop.center.x - 15" :y="loop.center.y - 15" font-size="12" fill="black"
-                        font-weight="bold" text-anchor="middle" dominant-baseline="middle"  @click="removeLap(loop)"
-                        >
-                        -
-                    </text>
-                </g>
-                <g v-if="loop.selected">
-                    <circle :cx="loop.center.x - 30" :cy="loop.center.y" r="6" :class="{ active: loop.selected }"
-                        fill="#FFD700"/>
-                    <text :x="loop.center.x - 30" :y="loop.center.y + 1" font-size="6" fill="black"
-                        font-weight="bold" text-anchor="middle" dominant-baseline="middle">
-                        X {{ loop.laps || 1 }}
-                    </text>
+                    <g  class="d-none">
+                        <circle :cx="loop.center.x - 15" :cy="loop.center.y" r="6" :class="{ active: loop.selected }"
+                            @click="addLap(loop)" fill="#FFD700"/>
+                        <text :x="loop.center.x - 15" :y="loop.center.y + 1" font-size="12" fill="black"
+                            font-weight="bold" text-anchor="middle" dominant-baseline="middle"  @click="addLap(loop)"
+                            >
+                            +
+                        </text>
+                    </g>
+                    <g >
+                        <circle :cx="loop.center.x - 15" :cy="loop.center.y - 15" r="6" :class="{ active: loop.selected }"
+                            @click="removeLap(loop)" fill="#FFD700"/>
+                        <text :x="loop.center.x - 15" :y="loop.center.y - 15" font-size="12" fill="black"
+                            font-weight="bold" text-anchor="middle" dominant-baseline="middle"  @click="removeLap(loop)"
+                            >
+                            -
+                        </text>
+                    </g>
+                    <g >
+                        <circle :cx="loop.center.x - 30" :cy="loop.center.y" r="6" :class="{ active: loop.selected }"
+                            fill="#FFD700"/>
+                        <text :x="loop.center.x - 30" :y="loop.center.y + 1" font-size="6" fill="black"
+                            font-weight="bold" text-anchor="middle" dominant-baseline="middle">
+                            X {{ loop.laps || 1 }}
+                        </text>
+                    </g>
                 </g>
             </g>
 
