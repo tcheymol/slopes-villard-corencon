@@ -43,7 +43,7 @@ onMounted(() => {
      v-if="isAlertVisible"
      >
         <div class="p-2 bg-yellow-600 items-center text-indigo-100 leading-none lg:rounded-full flex lg:inline-flex" role="alert">
-            <span class="font-semibold mr-2 text-left flex-auto text-2xl">
+            <span class="font-semibold mr-2 text-left flex-auto text-3xl">
                 🎉 WOW, déjà {{ getTotalLength(loops) }}km
             </span>
             <svg class="fill-current opacity-75 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"/></svg>
@@ -63,34 +63,7 @@ onMounted(() => {
                     font-weight="bold" text-anchor="middle" dominant-baseline="middle">
                     {{ loop.length }}
                 </text>
-                <g v-if="loop.selected">
-                    <g  class="d-none">
-                        <circle :cx="loop.center.x - 15" :cy="loop.center.y" r="6" :class="{ active: loop.selected }"
-                            @click="addLap(loop)" fill="#FFD700"/>
-                        <text :x="loop.center.x - 15" :y="loop.center.y + 1" font-size="12" fill="black"
-                            font-weight="bold" text-anchor="middle" dominant-baseline="middle"  @click="addLap(loop)"
-                            >
-                            +
-                        </text>
-                    </g>
-                    <g >
-                        <circle :cx="loop.center.x - 15" :cy="loop.center.y - 15" r="6" :class="{ active: loop.selected }"
-                            @click="removeLap(loop)" fill="#FFD700"/>
-                        <text :x="loop.center.x - 15" :y="loop.center.y - 15" font-size="12" fill="black"
-                            font-weight="bold" text-anchor="middle" dominant-baseline="middle"  @click="removeLap(loop)"
-                            >
-                            -
-                        </text>
-                    </g>
-                    <g >
-                        <circle :cx="loop.center.x - 30" :cy="loop.center.y" r="6" :class="{ active: loop.selected }"
-                            fill="#FFD700"/>
-                        <text :x="loop.center.x - 30" :y="loop.center.y + 1" font-size="6" fill="black"
-                            font-weight="bold" text-anchor="middle" dominant-baseline="middle">
-                            X {{ loop.laps || 1 }}
-                        </text>
-                    </g>
-                </g>
+                <Controls :loop="loop" @addLap="addLap(loop)" @removeLap="removeLap(loop)" v-if="loop.selected"/>
             </g>
 
         </svg>
