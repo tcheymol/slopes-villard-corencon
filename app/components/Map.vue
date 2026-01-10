@@ -1,11 +1,24 @@
 <script setup lang="ts">
 import { loopsData } from '~/assets/loops';
-import { getColor, getStyles, toggleLoop, addLap, removeLap } from '~/services/loops';
+import { getColor, getStyles, toggleLoop, addLap, removeLap, type Loop } from '~/services/loops';
 import { getTotalLength } from '~/services/loopsComputer';
 import { hide, initialTooltip, moveTooltip, show } from '~/services/tooltip';
 
 const tooltip = ref(initialTooltip);
 const loops = ref(loopsData)
+const isAlertVisible = ref(false)
+
+function showAlert() {
+    isAlertVisible.value = true;
+    setTimeout(() => {
+        isAlertVisible.value = false;
+    }, 2000);
+}
+
+function addLoop(loop: Loop) {
+    showAlert();
+    toggleLoop(loop);
+}
 
 onMounted(() => {
     loops.value.forEach(loop => {
@@ -18,11 +31,22 @@ onMounted(() => {
 </script>
 
 <template>
-    <h1 class="w-full text-3xl m-3">Calculateur d'intinéraire Villard-Corençon</h1>
-    <div class="w-full flex flex-col items-center m-2">
-        <div class="p-3 bg-base-200 rounded-lg border border-black dark:bg-white light:bg-neutral-900">
-            <span class="text-center w-full text-2xl light:text-white dark:text-black my-3">Total : {{
-                getTotalLength(loops) }}km</span>
+    <div>
+        <div class="w-full flex flex-col items-center m-2">
+            <div class="p-3 bg-base-200 rounded-lg border-yellow-600 border-8 dark:bg-white light:bg-neutral-900 relative top-5 z-10">
+                <span class="text-center w-full text-2xl light:text-white dark:text-black my-3">Total : {{
+                    getTotalLength(loops) }}km</span>
+        </div>
+        </div>
+    </div>
+    <div class="text-center py-4 lg:px-4 fixed z-10 w-screen"
+     v-if="isAlertVisible"
+     >
+        <div class="p-2 bg-yellow-600 items-center text-indigo-100 leading-none lg:rounded-full flex lg:inline-flex" role="alert">
+            <span class="font-semibold mr-2 text-left flex-auto text-2xl">
+                🎉 WOW, déjà {{ getTotalLength(loops) }}km
+            </span>
+            <svg class="fill-current opacity-75 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"/></svg>
         </div>
     </div>
     <div class="relative w-full">
@@ -31,11 +55,11 @@ onMounted(() => {
             @mousemove="(e: MouseEvent) => moveTooltip(tooltip, e)">
             <g v-for="loop in loops" :key="loop.id" transform="translate(365.78647,70.24688)">
                 <path :id="`path-${loop.id}`" :key="loop.id" :d="loop.path"
-                    :class="{ active: loop.selected, [loop.grade]: true }" @click="toggleLoop(loop)"
+                    :class="{ active: loop.selected, [loop.grade]: true }" @click="addLoop(loop)"
                     @mouseenter="show(tooltip, loop)" @mouseleave="hide(tooltip)" :style="getStyles(loop)" />
                 <circle :cx="loop.center.x" :cy="loop.center.y" r="6" :class="{ active: loop.selected }"
-                    @click="toggleLoop(loop)" :fill="getColor(loop)" />
-                <text :x="loop.center.x" :y="loop.center.y" font-size="6" fill="white" @click="toggleLoop(loop)"
+                    @click="addLoop(loop)" :fill="getColor(loop)" />
+                <text :x="loop.center.x" :y="loop.center.y" font-size="6" fill="white" @click="addLoop(loop)"
                     font-weight="bold" text-anchor="middle" dominant-baseline="middle">
                     {{ loop.length }}
                 </text>
