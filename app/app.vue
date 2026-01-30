@@ -42,22 +42,21 @@ useSeoMeta({
 
 <template>
   <UApp>
-    <UHeader>
+    <UHeader :toggle="true">
       <template #left>
         <NuxtLink to="/">
           <AppLogo class="w-auto h-6 shrink-0" />
         </NuxtLink>
-        
-        
-        <TemplateMenu />
+        <TemplateMenu class="hidden lg:flex" />
       </template>
-      
-      <h1 class="w-full text-3xl m-3">Calculateur d'intinéraire Villard-Corençon</h1> 
+
+      <h1 class="hidden lg:block text-3xl m-3">Calculateur d'intinéraire Villard-Corençon</h1>
 
       <template #right>
-        <UColorModeButton />
+        <UColorModeButton class="hidden lg:flex" />
 
         <UButton
+          class="hidden lg:flex"
           to="https://github.com/tcheymol/slopes-villard-corencon"
           target="_blank"
           icon="i-simple-icons-github"
@@ -65,6 +64,24 @@ useSeoMeta({
           color="neutral"
           variant="ghost"
         />
+      </template>
+
+      <template #body>
+        <div class="flex flex-col gap-4 p-4">
+          <h1 class="text-xl font-bold">Calculateur d'intinéraire</h1>
+          <TemplateMenu />
+          <div class="flex items-center gap-2">
+            <UColorModeButton />
+            <UButton
+              to="https://github.com/tcheymol/slopes-villard-corencon"
+              target="_blank"
+              icon="i-simple-icons-github"
+              aria-label="GitHub"
+              color="neutral"
+              variant="ghost"
+            />
+          </div>
+        </div>
       </template>
     </UHeader>
 
